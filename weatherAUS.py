@@ -23,19 +23,44 @@ plt.style.use('ggplot')
 
 url ='weatherAUS.csv'
 data = pd.read_csv(url)
+data.replace(to_replace ="NaN",value =-1)
+data.drop(['Date','Location'], axis = 1 ,inplace=True) 
+data['WindDir3pm'].replace(['N','S','E','W','NE','NW','NNE','NNW','SE','SW','SSE','SSW','WNW','WSW','ENE','ESE'],[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16], inplace=True)
+data['WindDir9am'].replace(['N','S','E','W','NE','NW','NNE','NNW','SE','SW','SSE','SSW','WNW','WSW','ENE','ESE'],[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16], inplace=True)
+data['WindGustDir'].replace(['N','S','E','W','NE','NW','NNE','NNW','SE','SW','SSE','SSW','WNW','WSW','ENE','ESE'],[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16], inplace=True)
+data['RainTomorrow'].replace(['No','Yes'],[0,1], inplace=True)      
+data['RainToday'].replace(['No','Yes'],[0,1], inplace=True)      
+data['Evaporation'].replace(np.nan,-1, inplace=True)    
+data['Sunshine'].replace(np.nan,-1, inplace=True)    
+data['Cloud3pm'].replace(np.nan,-1, inplace=True)         
+data['Cloud9am'].replace(np.nan,-1, inplace=True)     
+data['WindGustDir'].replace(np.nan,-1, inplace=True)    
+data['WindDir3pm'].replace(np.nan,-1, inplace=True)    
+data['WindDir9am'].replace(np.nan,-1, inplace=True)   
+data['WindGustSpeed'].replace(np.nan,-1, inplace=True)    
+data['WindSpeed9am'].replace(np.nan,-1, inplace=True)    
+data['WindSpeed3pm'].replace(np.nan,-1, inplace=True) 
+data['Pressure9am'].replace(np.nan,-1, inplace=True) 
+data['Pressure3pm'].replace(np.nan,-1, inplace=True) 
+data['Temp9am'].replace(np.nan,-1, inplace=True) 
+data['Temp3pm'].replace(np.nan,-1, inplace=True) 
+data['Humidity3pm'].replace(np.nan,-1, inplace=True)   
+data['Humidity9am'].replace(np.nan,-1, inplace=True)    
+data['Rainfall'].replace(np.nan,-1, inplace=True)    
+data['MinTemp'].replace(np.nan,-1, inplace=True)   
+data['MaxTemp'].replace(np.nan,-1, inplace=True)   
+data['RainToday'].replace(np.nan,-1, inplace=True) 
 
-data.drop(['poutcome','contact','previous','month','day','duration','pdays'], axis = 1 ,inplace=True)
-data['marital'].replace(['married','single','divorced'],[0,1,2], inplace=True)
 
+x=np.array(data.drop(['RainTomorrow'],1))
+y= np.array(data.RainTomorrow)
 
-x=np.array(data.drop(['y'],1))
-y= np.array(data.y)
+data_train = data[:85]
+data_test = data[85:]
 
-data_train = data[:850]
-data_test = data[850:]
+x_test_out = np.array(data_test.drop(['RainTomorrow'], 1))
+y_test_out = np.array(data_test.RainTomorrow)
 
-x_test_out = np.array(data_test.drop(['y'], 1))
-y_test_out = np.array(data_test.y)
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
 

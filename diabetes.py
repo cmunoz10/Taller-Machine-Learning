@@ -23,16 +23,24 @@ url ='diabetes.csv'
 data = pd.read_csv(url)
 
 
+data['BloodPressure'].replace(0, 69 ,inplace=True)
+data['SkinThickness'].replace(0, 21 ,inplace=True)
+data['Insulin'].replace(0, 80 ,inplace=True)
+
+
+
+
+
 x=np.array(data.drop(['Outcome'],1))
 y= np.array(data.Outcome)
 
-data_train = data[:800]
-data_test = data[800:]
+data_train = data[:80]
+data_test = data[80:]
 
 x_test_out = np.array(data_test.drop(['Outcome'], 1))
 y_test_out = np.array(data_test.Outcome)
 
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3)
 
 def mostrar_resultados(y_test, pred_y):
     conf_matrix = confusion_matrix(y_test, pred_y)
@@ -104,11 +112,11 @@ probs = probs[:, 1]
 auc = roc_auc_score(y_test_out, probs)
 
 print('AUC: %.2f' % auc)
-print('se toteo')
 fpr, tpr, thresholds = roc_curve(y_test_out, probs)
 plot_roc_curve(fpr, tpr)
 
 print('-'*50)
+
 
 
 #2.Vecinos mas cercanos
@@ -181,10 +189,8 @@ print(f'Accuracy de Entrenamiento: {svc.score(x_train, y_train)}')
 print(f'Accuracy de Test: {svc.score(x_test, y_test)}')
 y_pred = svc.predict(x_test_out);
 mostrar_resultados(y_test_out, y_pred)
-probs = svc.predict_proba(x_test_out)
-probs = probs[:, 1]
-auc = roc_auc_score(y_test_out, probs)
-print('AUC: %.2f' % auc)
+
+
 fpr, tpr, thresholds = roc_curve(y_test_out, probs)
 plot_roc_curve(fpr, tpr)
 print('*'* 50)
